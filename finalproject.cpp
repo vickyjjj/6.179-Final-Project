@@ -44,62 +44,74 @@ class ListHandler{
 		}
 
 		void statsOf1(bool printOut){
-			total1 = 0;
-			sortList1();
-			for(auto number: list1){
-				total1 += number;
-			}
-			mean1 = total1 / list1.size();
-
-			standardErrorSum1 = 0;
-			for(auto number: list1){
-				standardErrorSum1 += pow(number-mean1, 2);
-			}
-
-			standardDeviation1 = pow(standardErrorSum1 / (list1.size() - 1), 0.5);
-			variance1 = pow(standardDeviation1, 2);
-
-			max1 = list1[list1.size() - 1];
-			min1 = list1[0];
-
-			if(list1.size() % 2 == 0){
-				median1 = (list1[(list1.size()-1)/2 + 1] + list1[(list1.size() - 1) / 2])/2;
+			if(list1.empty()){
+				std::cout << "error: list isn't filled" << std::endl;
 			}
 			else{
-				median1 = list1[(list1.size() - 1 )/ 2];
-			}
-			if(printOut){
-				std::cout << "Mean: " << mean1 << "    Standard Error: " << standardErrorSum1 << "    Standard Deviation: " << standardDeviation1 << std::endl << "Variance: " << variance1 <<  "    Min: " << min1 << "    Median: " << median1 << "    Max: " << max1 <<  std::endl;
+
+				total1 = 0;
+				sortList1();
+				for(auto number: list1){
+					total1 += number;
+				}
+				mean1 = total1 / list1.size();
+
+				standardErrorSum1 = 0;
+				for(auto number: list1){
+					standardErrorSum1 += pow(number-mean1, 2);
+				}
+
+				standardDeviation1 = pow(standardErrorSum1 / (list1.size() - 1), 0.5);
+				variance1 = pow(standardDeviation1, 2);
+
+				max1 = list1[list1.size() - 1];
+				min1 = list1[0];
+
+				if(list1.size() % 2 == 0){
+					median1 = (list1[(list1.size()-1)/2 + 1] + list1[(list1.size() - 1) / 2])/2;
+				}
+				else{
+					median1 = list1[(list1.size() - 1 )/ 2];
+				}
+				if(printOut){
+					std::cout << "Mean: " << mean1 << "    Standard Error: " << standardErrorSum1 << "    Standard Deviation: " << standardDeviation1 << std::endl << "Variance: " << variance1 <<  "    Min: " << min1 << "    Median: " << median1 << "    Max: " << max1 <<  std::endl;
+				}
 			}
 		}
 
 		void statsOf2(bool printOut){
-			total2 = 0;
-			sortList2();
-			for(auto number: list2){
-				total2 += number;
-			}
-			mean2 = total2 / list2.size();
-
-			standardErrorSum2 = 0;
-			for(auto number: list2){
-				standardErrorSum2 += pow(number-mean2, 2);
-			}
-
-			standardDeviation2 = pow(standardErrorSum2 / (list2.size() - 1), 0.5);
-			variance2 = pow(standardDeviation2, 2);
-
-			max2 = list2[list2.size() - 1];
-			min2 = list2[0];
-
-			if(list2.size() % 2 == 0){
-				median2 = (list2[(list2.size()-1)/2 + 1] + list2[(list2.size() - 1) / 2])/2;
+			if(list2.empty()){
+				std::cout << "error: list isn't filled" << std::endl;
 			}
 			else{
-				median2 = list2[(list2.size() - 1 )/ 2];
-			}
-			if(printOut){
-				std::cout << "Mean: " << mean2 << "    Standard Error: " << standardErrorSum2 << "    Standard Deviation: " << standardDeviation2 << std::endl << "Variance: " << variance2 <<  "    Min: " << min2 << "    Median: " << median2 << "    Max: " << max2 <<  std::endl;
+
+				total2 = 0;
+				sortList2();
+				for(auto number: list2){
+					total2 += number;
+				}
+				mean2 = total2 / list2.size();
+
+				standardErrorSum2 = 0;
+				for(auto number: list2){
+					standardErrorSum2 += pow(number-mean2, 2);
+				}
+
+				standardDeviation2 = pow(standardErrorSum2 / (list2.size() - 1), 0.5);
+				variance2 = pow(standardDeviation2, 2);
+
+				max2 = list2[list2.size() - 1];
+				min2 = list2[0];
+
+				if(list2.size() % 2 == 0){
+					median2 = (list2[(list2.size()-1)/2 + 1] + list2[(list2.size() - 1) / 2])/2;
+				}
+				else{
+					median2 = list2[(list2.size() - 1 )/ 2];
+				}
+				if(printOut){
+					std::cout << "Mean: " << mean2 << "    Standard Error: " << standardErrorSum2 << "    Standard Deviation: " << standardDeviation2 << std::endl << "Variance: " << variance2 <<  "    Min: " << min2 << "    Median: " << median2 << "    Max: " << max2 <<  std::endl;
+				}
 			}
 		}
 
@@ -164,13 +176,9 @@ int main(){
 	std::cout << std::endl;
 
 
-	std::vector<double> test2;
-	test2.push_back(18);
-	test2.push_back(29);
-	test2.push_back(36);
-	test2.push_back(26.8);
+	std::vector<double> test3;
 
-	ListHandlerTest.assignList2(test2);
+	ListHandlerTest.assignList2(test3);
 	ListHandlerTest.statsOf2(true);
 
 	//statsOf(test);
