@@ -31,7 +31,7 @@ class ListHandler{
 	double median2 = 0;
 
 	public:
-		ListHandler(){
+    ListHandler(){
 
 		}
 
@@ -100,100 +100,142 @@ class ListHandler{
 				sortList2();
 				for(auto number: list2){
 					total2 += number;
-				}
-				mean2 = total2 / list2.size();
-
-				standardErrorSum2 = 0;
-				for(auto number: list2){
-					standardErrorSum2 += pow(number-mean2, 2);
-				}
-
-				standardDeviation2 = pow(standardErrorSum2 / (list2.size() - 1), 0.5);
-				variance2 = pow(standardDeviation2, 2);
-
-				max2 = list2[list2.size() - 1];
-				min2 = list2[0];
-
-				if(list2.size() % 2 == 0){
-					median2 = (list2[(list2.size()-1)/2 + 1] + list2[(list2.size() - 1) / 2])/2;
-				}
-				else{
-					median2 = list2[(list2.size() - 1 )/ 2];
-				}
-				if(printOut){
-					std::cout << "Mean: " << mean2 << "    Standard Error: " << standardErrorSum2 << "    Standard Deviation: " << standardDeviation2 << std::endl << "Variance: " << variance2 <<  "    Min: " << min2 << "    Median: " << median2 << "    Max: " << max2 <<  std::endl;
-				}
 			}
-		}
+			mean2 = total2 / list2.size();
 
-		void isLikely1(double number){
-			if(mean1 == 0){
-				statsOf1(false);
+			standardErrorSum2 = 0;
+			for(auto number: list2){
+				standardErrorSum2 += pow(number-mean2, 2);
 			}
-			if((number-mean1)/standardDeviation1 > 1.64485 || (number-mean1)/standardDeviation1 < -1.64485){
-				std::cout << "It is not likely that this number is part of this list" << std::endl;
+
+			standardDeviation2 = pow(standardErrorSum2 / (list2.size() - 1), 0.5);
+			variance2 = pow(standardDeviation2, 2);
+
+			max2 = list2[list2.size() - 1];
+			min2 = list2[0];
+
+			if(list2.size() % 2 == 0){
+				median2 = (list2[(list2.size()-1)/2 + 1] + list2[(list2.size() - 1) / 2])/2;
 			}
 			else{
-				std::cout << "It is likely that this number is part of thsi list" << std::endl;
+				median2 = list2[(list2.size() - 1 )/ 2];
+			}
+			if(printOut){
+				std::cout << "Mean: " << mean2 << "    Standard Error: " << standardErrorSum2 << "    Standard Deviation: " << standardDeviation2 << std::endl << "Variance: " << variance2 <<  "    Min: " << min2 << "    Median: " << median2 << "    Max: " << max2 <<  std::endl;
 			}
 		}
+	}
 
-		void isLikely2(double number){
-			if(mean2 == 0){
-				statsOf2(false);
-			}
-			if((number-mean2)/standardDeviation2 > 1.64485 || (number-mean2)/standardDeviation2 < -1.64485){
-				std::cout << "It is not likely that this number is part of this list" << std::endl;
-			}
-			else{
-				std::cout << "It is likely that this number is part of thsi list" << std::endl;
-			}
+	void isLikely1(double number){
+		statsOf1(false);
+		if((number-mean1)/standardDeviation1 > 1.64485 || (number-mean1)/standardDeviation1 < -1.64485){
+			std::cout << "It is not likely that this number is part of this list" << std::endl;
 		}
+		else{
+			std::cout << "It is likely that this number is part of this list" << std::endl;
+		}
+	}
 
-		void sortList1(){
-	    	int n = list1.size();
-	    	int min = 0;
-	    	double tempNumber = 0;
-	    	for(int j = 0; j < n-1; j++){
+	void isLikely2(double number){
+		statsOf2(false);
+		if((number-mean2)/standardDeviation2 > 1.64485 || (number-mean2)/standardDeviation2 < -1.64485){
+			std::cout << "It is not likely that this number is part of this list" << std::endl;
+		}
+		else{
+			std::cout << "It is likely that this number is part of thsi list" << std::endl;
+		}
+	}
 
-	        	min = j;
-
-	        	for(int i = j+1; i < n; i++){
-	            	if(list1[i] < list1[min]){
-	            	   	min = i;
-	           		 }
-	    		}
-
-	    		if(min != j){
-	            	tempNumber = list1[j];
-	            	list1[j] = list1[min];
-	           		list1[min] = tempNumber;
-	        	}
-	    	}
+	void sortList1(){
+    int n = list1.size();
+    int min = 0;
+    double tempNumber = 0;
+    for(int j = 0; j < n-1; j++){
+      min = j;
+      for(int i = j+1; i < n; i++){
+        if(list1[i] < list1[min]){
+          min = i;
+        }
+      }
+      if(min != j){
+        tempNumber = list1[j];
+        list1[j] = list1[min];
+        list1[min] = tempNumber;
+      }
+	  }
 	}
 
 	void sortList2(){
-    	int n = list2.size();
-    	int min = 0;
-    	double tempNumber = 0;
-    	for(int j = 0; j < n-1; j++){
+    int n = list2.size();
+    int min = 0;
+    double tempNumber = 0;
+    for(int j = 0; j < n-1; j++){
+      min = j;
+      for(int i = j+1; i < n; i++){
+        if(list2[i] < list2[min]){
+          min = i;
+        }
+      }
+      if(min != j){
+        tempNumber = list2[j];
+        list2[j] = list2[min];
+        list2[min] = tempNumber;
+      }
+    }
+  }
 
-        	min = j;
-
-        	for(int i = j+1; i < n; i++){
-            	if(list2[i] < list2[min]){
-               		min = i;
-            	}
-
-    		}
-
-    		if(min != j){
-            	tempNumber = list2[j];
-            	list2[j] = list2[min];
-           		list2[min] = tempNumber;
-        	}
-    	}
-	}
+  void compare(){
+    statsOf1(false);
+    statsOf2(false);
+    int degressOfFreedom = pow( variance1/list1.size() + variance2/list2.size() ,2) / (  pow(variance1/list1.size(),2)/(list1.size() - 1)  + pow(variance2/list2.size(),2)/(list2.size() - 1)           );
+    double requiredT = 0;
+    switch(degressOfFreedom){
+      case 1: requiredT = 6.313752; break;
+      case 2: requiredT = 2.919986; break;
+      case 3: requiredT = 2.353363; break;
+      case 4: requiredT = 2.131847; break;
+      case 5: requiredT = 2.015048; break;
+      case 6: requiredT = 1.943180; break;
+      case 7: requiredT = 1.894579; break;
+      case 8: requiredT = 1.859548; break;
+      case 9: requiredT = 1.833113; break;
+      case 10: requiredT = 1.812461; break;
+      case 11: requiredT = 1.795885; break;
+      case 12: requiredT = 1.782288; break;
+      case 13: requiredT = 1.770933; break;
+      case 14: requiredT = 1.761310; break;
+      case 15: requiredT = 1.753050; break;
+      case 16: requiredT = 1.745884; break; 
+      case 17: requiredT = 1.739607; break;
+      case 18: requiredT = 1.734064; break;
+      case 19: requiredT = 1.729133; break;
+      case 20: requiredT = 1.724718; break;
+      case 21: requiredT = 1.720743; break;
+      case 22: requiredT = 1.717144; break;
+      case 23: requiredT = 1.713872; break;
+      case 24: requiredT = 1.710882; break;
+      case 25: requiredT = 1.708141; break;
+      case 26: requiredT = 1.705618; break;
+      case 27: requiredT = 1.703288; break;
+      case 28: requiredT = 1.701131; break;
+      case 29: requiredT = 1.699127; break;
+      case 30: requiredT = 1.697261; break;
+      default: requiredT = 1.644854; break;
+    }
+    double pooledStandardDeviation = pow( ((list1.size() - 1)*pow(standardDeviation1, 2) + (list2.size() - 1)*pow(standardDeviation2, 2)) / ( list1.size() + list2.size() -2 ), 0.5 );
+    double actualT = (mean1-mean2) / ( pooledStandardDeviation * pow( 1.0/list1.size() + 1.0/list2.size(), 0.5 ) );
+    if(actualT > requiredT || actualT < -requiredT){
+      if(actualT > requiredT){
+        std::cout << "With 95% confidence, we can say that the population list1 has a higher mean than population of list2" << std::endl;
+      }
+      else{
+        std::cout << "With 95% confidence, we can say that the population list2 has a higher mean than population of list1" << std::endl;
+      }
+    } 
+    else{
+      std::cout << "With 95% confidence, we can say the population means of list1 and list2 are similar" << std::endl;
+    }
+  }
 };
 
 // class functions
@@ -324,6 +366,14 @@ int getListNumber() {
   return num;
 }
 
+double getNumber() {
+  double num;
+  bool notValid = true;
+  std::cout << "Enter number to test: ";
+  std::cin >> num;
+  return num;
+}
+
 int main() {
   ListHandler lh = ListHandler();
   bool running = true;
@@ -334,6 +384,7 @@ int main() {
     std::cout << "Enter command or 'help' for list of commands. ";
     std::cin >> startingStr;
     int listNum;
+    double testNum;
 
     if (startingStr == "add") {
       listNum = getListNumber();
@@ -353,13 +404,23 @@ int main() {
       running = false;
     } else if (startingStr == "stats") {
       listNum = getListNumber();
-    } else if (startingStr == "similar") {
-      std::cout << "TODO" << std::endl;
+      if(listNum == 1){
+        lh.statsOf1(true);
+      }
+      else{
+        lh.statsOf2(true);
+      }
     } else if (startingStr == "compare") {
-      std::cout << "TODO" << std::endl;
+      lh.compare();
     } else if (startingStr == "isValueLikely") {
       listNum = getListNumber();
-      std::cout << "TODO" << std::endl;
+      testNum = getNumber();
+      if(listNum == 1){
+        lh.isLikely1(testNum);
+      }
+      else{
+        lh.isLikely2(testNum);
+      }
     } else if (startingStr == "linearRegressionStats") {
       std::cout << "TODO" << std::endl;
     } else if (startingStr == "graph") {
@@ -369,6 +430,7 @@ int main() {
     } else {
       std::cout << "Invalid command; please try again." << std::endl;
     }
+    std::cout << std::endl;
   }
 
   return 0;
