@@ -115,6 +115,30 @@ class ListHandler{
 			}
 		}
 
+		void isLikely1(double number){
+			if(mean1 == 0){
+				statsOf1(false);
+			}
+			if((number-mean1)/standardDeviation1 > 1.64485 || (number-mean1)/standardDeviation1 < -1.64485){
+				std::cout << "It is not likely that this number is part of this list" << std::endl;
+			}
+			else{
+				std::cout << "It is likely that this number is part of thsi list" << std::endl;
+			}
+		}
+
+		void isLikely2(double number){
+			if(mean2 == 0){
+				statsOf2(false);
+			}
+			if((number-mean2)/standardDeviation2 > 1.64485 || (number-mean2)/standardDeviation2 < -1.64485){
+				std::cout << "It is not likely that this number is part of this list" << std::endl;
+			}
+			else{
+				std::cout << "It is likely that this number is part of thsi list" << std::endl;
+			}
+		}
+
 		void sortList1(){
 	    	int n = list1.size();
 	    	int min = 0;
@@ -170,16 +194,20 @@ int main(){
 
 	ListHandler ListHandlerTest = *(new ListHandler());
 	ListHandlerTest.assignList1(test);
-	ListHandlerTest.statsOf1(true);
+	//ListHandlerTest.statsOf1(true);
 
 
-	std::cout << std::endl;
+	//std::cout << std::endl;
 
 
-	std::vector<double> test3;
+	//std::vector<double> test3;
 
-	ListHandlerTest.assignList2(test3);
-	ListHandlerTest.statsOf2(true);
+	//ListHandlerTest.assignList2(test3);
+	//ListHandlerTest.statsOf2(true);
+
+	//std::cout << std::endl;
+
+	ListHandlerTest.isLikely1(17);
 
 	//statsOf(test);
 	return 0;
