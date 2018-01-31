@@ -280,13 +280,37 @@ void ListHandler::plot() {
 void ListHandler::addToList(int listNum) {
   // get numbers to add
   std::vector<double> numsToAdd;
-  std::cout << "\tEnter number of numbers to add: ";
+  std::cout << "Enter number of numbers to add: ";
   int num;
-  std::cin >> num;
-  std::cout << "\tEnter numbers line by line." << std::endl;
+  bool isValid = false;
+  while(!isValid){
+    std::cin >> num;
+    if(std::cin.fail()){
+    std::cin.clear(); 
+    std::cin.ignore();
+    std::cout << "Please enter an Integer or Double only." << std::endl;
+  }
+  else{
+    isValid = true;
+  }
+  }
+  isValid = false;
+  std::cout << "Enter numbers line by line." << std::endl;
+  
   for (size_t i = 0; i < num; i++) {
     double addNum;
-    std::cin >> addNum;
+    while(!isValid){
+      std::cin >> addNum;
+      if(std::cin.fail()){
+      std::cin.clear(); 
+      std::cin.ignore();
+      std::cout << "Please enter an Integer or Double only." << std::endl;
+    }
+    else{
+      isValid = true;
+    }
+    }
+    isValid = false;
     numsToAdd.push_back(addNum);
   }
 
@@ -298,19 +322,42 @@ void ListHandler::addToList(int listNum) {
       this->list2.push_back(x);
     }
   }
-  std::cout << "\tNumbers added." << std::endl;
+  std::cout << "Numbers added." << std::endl;
 }
 
 void ListHandler::removeFromList(int listNum) {
   // get numbers to remove
   std::vector<double> numsToRemove;
-  std::cout << "\tEnter number of numbers to remove: ";
+  std::cout << "Enter number of numbers to remove: ";
   int num;
-  std::cin >> num;
-  std::cout << "\tEnter numbers line by line." << std::endl;
+  bool isValid = false;
+  while(!isValid){
+    std::cin >> num;
+    if(std::cin.fail()){
+    std::cin.clear(); 
+    std::cin.ignore();
+    std::cout << "Please enter an Integer or Double only." << std::endl;
+  }
+  else{
+    isValid = true;
+  }
+  }
+  isValid = false;
+  std::cout << "Enter numbers line by line." << std::endl;
   for (size_t i = 0; i < num; i++) {
     double removeNum;
-    std::cin >> removeNum;
+    while(!isValid){
+      std::cin >> removeNum;
+      if(std::cin.fail()){
+      std::cin.clear(); 
+      std::cin.ignore();
+      std::cout << "Please enter an Integer or Double only." << std::endl;
+    }
+    else{
+      isValid = true;
+    }
+    }
+  isValid = false;
     numsToRemove.push_back(removeNum);
   }
 
@@ -322,7 +369,7 @@ void ListHandler::removeFromList(int listNum) {
       this->list2.erase(std::remove(this->list2.begin(), this->list2.end(), x), this->list2.end());
     }
   }
-  std::cout << "\tNumbers removed." << std::endl;
+  std::cout << "Numbers removed." << std::endl;
 }
 
 void ListHandler::removeAll(int listNum) {
@@ -404,7 +451,19 @@ int getListNumber() {
   bool notValid = true;
   while (notValid) {
     std::cout << "Enter number of list you want (1 or 2): ";
-    std::cin >> num;
+    bool isValid = false;
+    while(!isValid){
+      std::cin >> num;
+      if(std::cin.fail()){
+      std::cin.clear(); 
+      std::cin.ignore();
+      std::cout << "Please enter an Integer or Double only." << std::endl;
+    }
+    else{
+      isValid = true;
+    }
+    }
+    isValid = false;
     if (num == 1 || num == 2) {
       notValid = false;
     } else {
@@ -416,9 +475,20 @@ int getListNumber() {
 
 double getNumber() {
   double num;
-  bool notValid = true;
   std::cout << "Enter number to test: ";
-  std::cin >> num;
+  bool isValid = false;
+  while(!isValid){
+    std::cin >> num;
+    if(std::cin.fail()){
+    std::cin.clear(); 
+    std::cin.ignore();
+    std::cout << "Please enter an Integer or Double only." << std::endl;
+  }
+  else{
+    isValid = true;
+  }
+  }
+  isValid = false;
   return num;
 }
 
