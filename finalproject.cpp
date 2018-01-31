@@ -265,20 +265,25 @@ void ListHandler::plot() {
 	std::vector<double> x = this->list1;
   std::vector<double> y = this->list2;
 
-	Gnuplot g1 = Gnuplot("lines");
+	try {
+		Gnuplot g1 = Gnuplot("Plot Title");
 
-	g1.set_style("points");
-	g1.plot_xy(x,y,"user-defined points");
-	sleep(30);
+		g1.set_style("points");
+		g1.plot_xy(x,y,"Point");
+		sleep(30);
+
+	} catch (GnuplotException ge) {
+		std::cout << ge.what() << std::endl;
+	}
 }
 
 void ListHandler::addToList(int listNum) {
   // get numbers to add
   std::vector<double> numsToAdd;
-  std::cout << "Enter number of numbers to add: ";
+  std::cout << "\tEnter number of numbers to add: ";
   int num;
   std::cin >> num;
-  std::cout << "Enter numbers line by line." << std::endl;
+  std::cout << "\tEnter numbers line by line." << std::endl;
   for (size_t i = 0; i < num; i++) {
     double addNum;
     std::cin >> addNum;
@@ -293,16 +298,16 @@ void ListHandler::addToList(int listNum) {
       this->list2.push_back(x);
     }
   }
-  std::cout << "Numbers added." << std::endl;
+  std::cout << "\tNumbers added." << std::endl;
 }
 
 void ListHandler::removeFromList(int listNum) {
   // get numbers to remove
   std::vector<double> numsToRemove;
-  std::cout << "Enter number of numbers to remove: ";
+  std::cout << "\tEnter number of numbers to remove: ";
   int num;
   std::cin >> num;
-  std::cout << "Enter numbers line by line." << std::endl;
+  std::cout << "\tEnter numbers line by line." << std::endl;
   for (size_t i = 0; i < num; i++) {
     double removeNum;
     std::cin >> removeNum;
@@ -317,7 +322,7 @@ void ListHandler::removeFromList(int listNum) {
       this->list2.erase(std::remove(this->list2.begin(), this->list2.end(), x), this->list2.end());
     }
   }
-  std::cout << "Numbers removed." << std::endl;
+  std::cout << "\tNumbers removed." << std::endl;
 }
 
 void ListHandler::removeAll(int listNum) {
@@ -362,7 +367,36 @@ std::ostream &operator<<(std::ostream &os, ListHandler &lh) {
 // Non-class functions
 
 void printHelp() {
-  std::cout << "Why are you asking for help?" << std::endl;
+	// add
+  std::cout << "add" << std::endl;
+	std::cout << "\t -Use to add values to list 1 or 2" << std::endl;
+	// remove
+	std::cout << "remove" << std::endl;
+	std::cout << "\t -Use to remove values from list 1 or 2" << std::endl;
+	// removeAll
+	std::cout << "removeAll" << std::endl;
+	std::cout << "\t -Use to entirely empty list 1 or 2" << std::endl;
+	// print
+	std::cout << "print" << std::endl;
+	std::cout << "\t -Use to print both lists" << std::endl;
+	// help
+	std::cout << "help" << std::endl;
+	std::cout << "\t -Use to see commands" << std::endl;
+	// end
+	std::cout << "end" << std::endl;
+	std::cout << "\t -Use to close calculator" << std::endl;
+	// stats
+	std::cout << "stats" << std::endl;
+	std::cout << "\t -Use to view basic stats on list 1 or 2" << std::endl;
+	// compare
+	std::cout << "compare" << std::endl;
+	std::cout << "\t -Use to compare lists 1 and 2" << std::endl;
+	// plot
+	std::cout << "plot" << std::endl;
+	std::cout << "\t -Use to plot list 1 (x) vs. list 2 (y)" << std::endl;
+	// isValueLikely
+	std::cout << "isValueLikely" << std::endl;
+	std::cout << "\t -Use to see if value is likely to occur in list 1 or 2" << std::endl;
 }
 
 int getListNumber() {
@@ -414,7 +448,7 @@ int main() {
     } else if (startingStr == "help") {
       printHelp();
     } else if (startingStr == "end") {
-      std::cout << "Closing statistics application. Goodbye." << std::endl;
+      std::cout << "\tClosing statistics application. Goodbye." << std::endl;
       running = false;
     } else if (startingStr == "stats") {
       listNum = getListNumber();
