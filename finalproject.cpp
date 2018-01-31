@@ -5,6 +5,8 @@
 #include <math.h>
 #include <string>
 #include <cmath>
+#include <unistd.h>
+#include "gnuplot_i.hpp"
 
 // 6.179 Final Project January 2018
 // Colin Chaney and Victoria Juan
@@ -38,6 +40,7 @@ class ListHandler{
 		void addToList(int listNum);
     void removeFromList(int listNum);
     void removeAll(int listNum);
+		void plot();
 
     friend std::ostream &operator<<(std::ostream &os, ListHandler &lh);
 
@@ -205,7 +208,7 @@ class ListHandler{
       case 13: requiredT = 1.770933; break;
       case 14: requiredT = 1.761310; break;
       case 15: requiredT = 1.753050; break;
-      case 16: requiredT = 1.745884; break; 
+      case 16: requiredT = 1.745884; break;
       case 17: requiredT = 1.739607; break;
       case 18: requiredT = 1.734064; break;
       case 19: requiredT = 1.729133; break;
@@ -231,7 +234,7 @@ class ListHandler{
       else{
         std::cout << "With 95% confidence, we can say that the population list2 has a higher mean than population of list1" << std::endl;
       }
-    } 
+    }
     else{
       std::cout << "With 95% confidence, we can say the population means of list1 and list2 are similar" << std::endl;
     }
@@ -256,6 +259,17 @@ std::vector<double> ListHandler::allNums2() const
     allNums.push_back(x);
   }
   return allNums;
+}
+
+void ListHandler::plot() {
+	std::vector<double> x = this->list1;
+  std::vector<double> y = this->list2;
+
+	Gnuplot g1 = Gnuplot("lines");
+
+	g1.set_style("points");
+	g1.plot_xy(x,y,"user-defined points");
+	sleep(30);
 }
 
 void ListHandler::addToList(int listNum) {
@@ -423,8 +437,8 @@ int main() {
       }
     } else if (startingStr == "linearRegressionStats") {
       std::cout << "TODO" << std::endl;
-    } else if (startingStr == "graph") {
-      std::cout << "TODO" << std::endl;
+    } else if (startingStr == "plot") {
+      lh.plot();
     } else if (startingStr == "residualPlot") {
       std::cout << "TODO" << std::endl;
     } else {
