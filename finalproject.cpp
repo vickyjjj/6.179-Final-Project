@@ -44,6 +44,7 @@ class ListHandler{
     void removeFromList(int listNum);
     void removeAll(int listNum);
 		void plot();
+		void plotWithLine(int num, std::vector<double> nums);
 
     friend std::ostream &operator<<(std::ostream &os, ListHandler &lh);
 
@@ -52,7 +53,8 @@ class ListHandler{
 
     // Colin's functions, written in the class definition itself
 
-    void createLinearRegression(){
+    std::vector<double> createLinearRegression(){
+			std::vector<double> values;
       if(list1.size() != list2.size()){
         std::cout << "Lists are not the same length and a linear regression can't be done" << std::endl;
       }
@@ -63,7 +65,6 @@ class ListHandler{
         double sumOfXSquared = 0;
         for(int i = 0; i < list1.size(); i++){
           sumOfXTimesY += (list1[i] * list2[i]);
-          std::cout << (list1[i] * list2[i]) << std::endl;
           sumOfXSquared += pow(list1[i], 2);
         }
         double a = (total2 * sumOfXSquared - total1 * sumOfXTimesY) / ( list1.size() * sumOfXSquared - pow(total1, 2));
@@ -79,8 +80,12 @@ class ListHandler{
         }
         double rSquared = SSR/SSTO;
         std::cout << "Offset: " << a << "   Slope: " << b << "   Y = " << b << "*x + " << a << "   R Squared: " << rSquared << std::endl;
+				values.push_back(a);
+				values.push_back(b);
+				return values;
       }
     }
+
 		void assignList1(std::vector<double> list){
 			list1 = list;
 		}
@@ -300,12 +305,43 @@ void ListHandler::plot() {
   std::vector<double> y = this->list2;
 
 	try {
-		Gnuplot g1 = Gnuplot("Plot Title");
-
+		Gnuplot g1 = Gnuplot("Plot");
 		g1.set_style("points");
 		g1.plot_xy(x,y,"Point");
-		sleep(30);
+		sleep(15);
+	} catch (GnuplotException ge) {
+		std::cout << ge.what() << std::endl;
+	}
+}
 
+void ListHandler::plotWithLine(int num, std::vector<double> nums) {
+
+	std::vector<double> x;
+  std::vector<double> y;
+
+	if (num == 0) {
+		x = this->list1;
+		y = this->residual;
+	} else {
+		x = this->list1;
+		y = this->list2;
+	}
+
+	double a = nums[0];
+	double b = nums[1];
+
+	try {
+		Gnuplot g1 = Gnuplot("Plot");
+		g1.set_style("points");
+		if (num == 0) {
+			g1.plot_xy(x,y,"Residual Point");
+			g1.plot_slope(b, a, "y=0");
+		} else {
+			g1.plot_xy(x,y,"Point");
+			std::string equation = "y=" + std::to_string(b) + "x+" + std::to_string(a);
+			g1.plot_slope(b, a, equation);
+		}
+		sleep(15);
 	} catch (GnuplotException ge) {
 		std::cout << ge.what() << std::endl;
 	}
@@ -320,7 +356,7 @@ void ListHandler::addToList(int listNum) {
   while(!isValid){
     std::cin >> num;
     if(std::cin.fail()){
-    std::cin.clear(); 
+    std::cin.clear();
     std::cin.ignore();
     std::cout << "Please enter an Integer or Double only." << std::endl;
   }
@@ -330,13 +366,13 @@ void ListHandler::addToList(int listNum) {
   }
   isValid = false;
   std::cout << "Enter numbers line by line." << std::endl;
-  
+
   for (size_t i = 0; i < num; i++) {
     double addNum;
     while(!isValid){
       std::cin >> addNum;
       if(std::cin.fail()){
-      std::cin.clear(); 
+      std::cin.clear();
       std::cin.ignore();
       std::cout << "Please enter an Integer or Double only." << std::endl;
     }
@@ -368,7 +404,7 @@ void ListHandler::removeFromList(int listNum) {
   while(!isValid){
     std::cin >> num;
     if(std::cin.fail()){
-    std::cin.clear(); 
+    std::cin.clear();
     std::cin.ignore();
     std::cout << "Please enter an Integer or Double only." << std::endl;
   }
@@ -383,7 +419,7 @@ void ListHandler::removeFromList(int listNum) {
     while(!isValid){
       std::cin >> removeNum;
       if(std::cin.fail()){
-      std::cin.clear(); 
+      std::cin.clear();
       std::cin.ignore();
       std::cout << "Please enter an Integer or Double only." << std::endl;
     }
@@ -450,7 +486,7 @@ std::ostream &operator<<(std::ostream &os, ListHandler &lh) {
 void printHelp() {
 	// add
   std::cout << "add" << std::endl;
-	std::cout << "\t -Use to add values to list 1 or 2" << std::endl;
+	std::cout << " -Use to add values to list 1 or 2" << std::endl;
 	// remove
 	std::cout << "remove" << std::endl;
 	std::cout << "\t -Use to remove values from list 1 or 2" << std::endl;
@@ -475,9 +511,19 @@ void printHelp() {
 	// plot
 	std::cout << "plot" << std::endl;
 	std::cout << "\t -Use to plot list 1 (x) vs. list 2 (y)" << std::endl;
+	// linregplot
+	std::cout << "linregplot" << std::endl;
+	std::cout << "\t -Use to plot list 1 (x) vs. list 2 (y) with line of best fit" << std::endl;
+	// plot
+	std::cout << "residualplot" << std::endl;
+	std::cout << "\t -Use to plot residuals" << std::endl;
 	// isValueLikely
 	std::cout << "isValueLikely" << std::endl;
 	std::cout << "\t -Use to see if value is likely to occur in list 1 or 2" << std::endl;
+	// linreg
+	std::cout << "linreg" << std::endl;
+	std::cout << "\t -Use to see linear regression statistics, including equation for line of best fit and R-squared value" << std::endl;
+
 }
 
 int getListNumber() {
@@ -489,7 +535,7 @@ int getListNumber() {
     while(!isValid){
       std::cin >> num;
       if(std::cin.fail()){
-      std::cin.clear(); 
+      std::cin.clear();
       std::cin.ignore();
       std::cout << "Please enter an Integer or Double only." << std::endl;
     }
@@ -514,7 +560,7 @@ double getNumber() {
   while(!isValid){
     std::cin >> num;
     if(std::cin.fail()){
-    std::cin.clear(); 
+    std::cin.clear();
     std::cin.ignore();
     std::cout << "Please enter an Integer or Double only." << std::endl;
   }
@@ -552,7 +598,7 @@ int main() {
     } else if (startingStr == "help") {
       printHelp();
     } else if (startingStr == "end") {
-      std::cout << "\tClosing statistics application. Goodbye." << std::endl;
+      std::cout << "Closing statistics application. Goodbye." << std::endl;
       running = false;
     } else if (startingStr == "stats") {
       listNum = getListNumber();
@@ -573,12 +619,19 @@ int main() {
       else{
         lh.isLikely2(testNum);
       }
-    } else if (startingStr == "linearRegressionStats") {
+    } else if (startingStr == "linreg") {
       lh.createLinearRegression();
     } else if (startingStr == "plot") {
       lh.plot();
-    } else if (startingStr == "residualPlot") {
-      std::cout << "TODO" << std::endl;
+    } else if (startingStr == "resplot") {
+			lh.createLinearRegression();
+			std::vector<double> line;
+			line.push_back(0.0);
+			line.push_back(0.0);
+      lh.plotWithLine(0, line);
+    } else if (startingStr == "linregplot") {
+			std::vector<double> line = lh.createLinearRegression();
+      lh.plotWithLine(1, line);
     } else {
       std::cout << "Invalid command; please try again." << std::endl;
     }
