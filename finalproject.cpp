@@ -13,6 +13,7 @@
 
 class ListHandler{
 	std::vector<double> list1;
+  std::vector<double> sortedList1;
 	double total1 = 0;
 	double mean1 = 0;
 	double standardErrorSum1 = 0;
@@ -23,6 +24,8 @@ class ListHandler{
 	double median1 = 0;
 
 	std::vector<double> list2;
+  std::vector<double> sortedList2;
+  std::vector<double> residual;
 	double total2 = 0;
 	double mean2 = 0;
 	double standardErrorSum2 = 0;
@@ -49,6 +52,35 @@ class ListHandler{
 
     // Colin's functions, written in the class definition itself
 
+    void createLinearRegression(){
+      if(list1.size() != list2.size()){
+        std::cout << "Lists are not the same length and a linear regression can't be done" << std::endl;
+      }
+      else{
+        statsOf1(false);
+        statsOf2(false);
+        double sumOfXTimesY = 0;
+        double sumOfXSquared = 0;
+        for(int i = 0; i < list1.size(); i++){
+          sumOfXTimesY += (list1[i] * list2[i]);
+          std::cout << (list1[i] * list2[i]) << std::endl;
+          sumOfXSquared += pow(list1[i], 2);
+        }
+        double a = (total2 * sumOfXSquared - total1 * sumOfXTimesY) / ( list1.size() * sumOfXSquared - pow(total1, 2));
+        double b = ( list1.size() * sumOfXTimesY - total1 * total2 ) / ( list1.size() * sumOfXSquared - pow(total1, 2) );
+        double SSR = 0;
+        double SSTO = 0;
+        double expectedValue = 0;
+        for(int i = 0; i < list1.size(); i++){
+          expectedValue = list1[i] * b + a;
+          residual.push_back(list2[i] - expectedValue);
+          SSR += pow( expectedValue - mean2, 2);
+          SSTO += pow( list2[i] - mean2, 2);
+        }
+        double rSquared = SSR/SSTO;
+        std::cout << "Offset: " << a << "   Slope: " << b << "   Y = " << b << "*x + " << a << "   R Squared: " << rSquared << std::endl;
+      }
+    }
 		void assignList1(std::vector<double> list){
 			list1 = list;
 		}
@@ -58,76 +90,76 @@ class ListHandler{
 		}
 
 		void statsOf1(bool printOut){
-			if(list1.empty()){
-				std::cout << "error: list isn't filled" << std::endl;
-			}
-			else{
+      if(list1.empty()){
+        std::cout << "error: list isn't filled" << std::endl;
+      }
+      else{
 
-				total1 = 0;
-				sortList1();
-				for(auto number: list1){
-					total1 += number;
-				}
-				mean1 = total1 / list1.size();
+        total1 = 0;
+        sortList1();
+        for(auto number: list1){
+          total1 += number;
+        }
+        mean1 = total1 / list1.size();
 
-				standardErrorSum1 = 0;
-				for(auto number: list1){
-					standardErrorSum1 += pow(number-mean1, 2);
-				}
+        standardErrorSum1 = 0;
+        for(auto number: list1){
+          standardErrorSum1 += pow(number-mean1, 2);
+        }
 
-				standardDeviation1 = pow(standardErrorSum1 / (list1.size() - 1), 0.5);
-				variance1 = pow(standardDeviation1, 2);
+        standardDeviation1 = pow(standardErrorSum1 / (list1.size() - 1), 0.5);
+        variance1 = pow(standardDeviation1, 2);
 
-				max1 = list1[list1.size() - 1];
-				min1 = list1[0];
+        max1 = sortedList1[sortedList1.size() - 1];
+        min1 = sortedList1[0];
 
-				if(list1.size() % 2 == 0){
-					median1 = (list1[(list1.size()-1)/2 + 1] + list1[(list1.size() - 1) / 2])/2;
-				}
-				else{
-					median1 = list1[(list1.size() - 1 )/ 2];
-				}
-				if(printOut){
-					std::cout << "Mean: " << mean1 << "    Standard Error: " << standardErrorSum1 << "    Standard Deviation: " << standardDeviation1 << std::endl << "Variance: " << variance1 <<  "    Min: " << min1 << "    Median: " << median1 << "    Max: " << max1 <<  std::endl;
-				}
-			}
-		}
+        if(sortedList1.size() % 2 == 0){
+          median1 = (sortedList1[(sortedList1.size()-1)/2 + 1] + sortedList1[(sortedList1.size() - 1) / 2])/2;
+        }
+        else{
+          median1 = sortedList1[(sortedList1.size() - 1 )/ 2];
+        }
+        if(printOut){
+          std::cout << "Mean: " << mean1 << "    Standard Error: " << standardErrorSum1 << "    Standard Deviation: " << standardDeviation1 << std::endl << "Variance: " << variance1 <<  "    Min: " << min1 << "    Median: " << median1 << "    Max: " << max1 <<  std::endl;
+        }
+      }
+    }
 
 		void statsOf2(bool printOut){
-			if(list2.empty()){
-				std::cout << "error: list isn't filled" << std::endl;
-			}
-			else{
+      if(list2.empty()){
+        std::cout << "error: list isn't filled" << std::endl;
+      }
+      else{
 
-				total2 = 0;
-				sortList2();
-				for(auto number: list2){
-					total2 += number;
-			}
-			mean2 = total2 / list2.size();
+        total2 = 0;
+        sortList2();
+        for(auto number: list2){
+          total2 += number;
+      }
+      mean2 = total2 / list2.size();
 
-			standardErrorSum2 = 0;
-			for(auto number: list2){
-				standardErrorSum2 += pow(number-mean2, 2);
-			}
+      standardErrorSum2 = 0;
+      for(auto number: list2){
+        standardErrorSum2 += pow(number-mean2, 2);
+      }
 
-			standardDeviation2 = pow(standardErrorSum2 / (list2.size() - 1), 0.5);
-			variance2 = pow(standardDeviation2, 2);
+      standardDeviation2 = pow(standardErrorSum2 / (list2.size() - 1), 0.5);
+      variance2 = pow(standardDeviation2, 2);
 
-			max2 = list2[list2.size() - 1];
-			min2 = list2[0];
+      max2 = sortedList2[sortedList2.size() - 1];
+      min2 = sortedList2[0];
 
-			if(list2.size() % 2 == 0){
-				median2 = (list2[(list2.size()-1)/2 + 1] + list2[(list2.size() - 1) / 2])/2;
-			}
-			else{
-				median2 = list2[(list2.size() - 1 )/ 2];
-			}
-			if(printOut){
-				std::cout << "Mean: " << mean2 << "    Standard Error: " << standardErrorSum2 << "    Standard Deviation: " << standardDeviation2 << std::endl << "Variance: " << variance2 <<  "    Min: " << min2 << "    Median: " << median2 << "    Max: " << max2 <<  std::endl;
-			}
-		}
-	}
+      if(sortedList2.size() % 2 == 0){
+        median2 = (sortedList2[(sortedList2.size()-1)/2 + 1] + sortedList2[(sortedList2.size() - 1) / 2])/2;
+      }
+      else{
+        median2 = sortedList2[(sortedList2.size() - 1 )/ 2];
+      }
+      if(printOut){
+        std::cout << "Mean: " << mean2 << "    Standard Error: " << standardErrorSum2 << "    Standard Deviation: " << standardDeviation2 << std::endl << "Variance: " << variance2 <<  "    Min: " << min2 << "    Median: " << median2 << "    Max: " << max2 <<  std::endl;
+      }
+    }
+  }
 
 	void isLikely1(double number){
 		statsOf1(false);
@@ -150,39 +182,41 @@ class ListHandler{
 	}
 
 	void sortList1(){
-    int n = list1.size();
+  sortedList1 = list1;
+    int n = sortedList1.size();
     int min = 0;
     double tempNumber = 0;
     for(int j = 0; j < n-1; j++){
       min = j;
       for(int i = j+1; i < n; i++){
-        if(list1[i] < list1[min]){
+        if(sortedList1[i] < sortedList1[min]){
           min = i;
         }
       }
       if(min != j){
-        tempNumber = list1[j];
-        list1[j] = list1[min];
-        list1[min] = tempNumber;
+        tempNumber = sortedList1[j];
+        sortedList1[j] = sortedList1[min];
+        sortedList1[min] = tempNumber;
       }
-	  }
-	}
+    }
+  }
 
 	void sortList2(){
-    int n = list2.size();
+  sortedList2 = list2;
+    int n = sortedList2.size();
     int min = 0;
     double tempNumber = 0;
     for(int j = 0; j < n-1; j++){
       min = j;
       for(int i = j+1; i < n; i++){
-        if(list2[i] < list2[min]){
+        if(sortedList2[i] < sortedList2[min]){
           min = i;
         }
       }
       if(min != j){
-        tempNumber = list2[j];
-        list2[j] = list2[min];
-        list2[min] = tempNumber;
+        tempNumber = sortedList2[j];
+        sortedList2[j] = sortedList2[min];
+        sortedList2[min] = tempNumber;
       }
     }
   }
@@ -540,7 +574,7 @@ int main() {
         lh.isLikely2(testNum);
       }
     } else if (startingStr == "linearRegressionStats") {
-      std::cout << "TODO" << std::endl;
+      lh.createLinearRegression();
     } else if (startingStr == "plot") {
       lh.plot();
     } else if (startingStr == "residualPlot") {
