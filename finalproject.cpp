@@ -515,7 +515,7 @@ void printHelp() {
 	std::cout << "linregplot" << std::endl;
 	std::cout << "\t -Use to plot list 1 (x) vs. list 2 (y) with line of best fit" << std::endl;
 	// plot
-	std::cout << "residualplot" << std::endl;
+	std::cout << "resplot" << std::endl;
 	std::cout << "\t -Use to plot residuals" << std::endl;
 	// isValueLikely
 	std::cout << "isValueLikely" << std::endl;
